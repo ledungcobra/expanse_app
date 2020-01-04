@@ -1,5 +1,5 @@
-import 'package:intl/intl.dart';
-import './widgets/transaction_list.dart';
+
+import './widgets/user_transaction.dart';
 import 'package:flutter/material.dart';
 
 
@@ -29,50 +29,19 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text("Flutter App"),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Card(
-              child: Text("chart here"),
-            ),
-            Card(
-              elevation: 20,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                      ),
-                      controller:  titleController,
-                      
-                    ),
-                    SizedBox(
-                      height: 1,
-                    ),
-                    TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(labelText: 'Amount'),
-                     controller:  amountController,
-                    ),
-                    FlatButton(
-                      child: Text('Add Transaction'),
-                      textColor: Colors.purple,
-                      onPressed: () {
-                       print(titleController.text);
-                      },
-                    ),
-                    TransactionList()
-                  ],
-                ),
+        body: SingleChildScrollView(
+                  child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Card(
+                child: Text("chart here"),
               ),
-            ),
-          
-          ],
+              UserTransaction()
+       
+            
+            ],
+          ),
         )
         );
   }
