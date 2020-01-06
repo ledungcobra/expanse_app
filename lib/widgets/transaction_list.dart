@@ -5,24 +5,33 @@ import 'package:intl/intl.dart';
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTransaction;
-  TransactionList(this.transactions,this.deleteTransaction); 
+  
+  TransactionList(this.transactions, this.deleteTransaction);
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Container(
-      height: 300,
+      height: mediaQuery.size.height / 1.5,
       child: transactions.isEmpty
-          ? Column(
-              children: <Widget>[
-                Text('No item add here'),
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
+          ? LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: <Widget>[
+                    Container(
+                        height: constraints.maxHeight * 0.05,
+                        child: FittedBox(child: Text('No item add here'))),
+                    SizedBox(
+                      height: constraints.maxHeight * 0.05,
+                    ),
+                    Container(
+                      height: constraints.maxHeight * 0.9,
+                      child: Image.asset('assets/images/waiting.png',
+                          fit: BoxFit.contain),
+                    ),
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                );
+              },
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
@@ -53,18 +62,26 @@ class TransactionList extends StatelessWidget {
                               .toString(),
                           style: TextStyle(fontSize: 15, color: Colors.grey),
                         ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete,
-                          color: Theme.of(context).errorColor,
-                          ),
-                          onPressed: () {
-                            deleteTransaction(transactions[index].id);
-                          },
-                        ),
+                        trailing: mediaQuery.size.width > 600
+                            ? FlatButton.icon(
+                                label: Text('Delete'),
+                                icon: Icon(Icons.delete),
+                                textColor: Theme.of(context).errorColor,
+                                onPressed: () {
+                                  deleteTransaction(transactions[index].id);
+                                },
+                              ) : IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Theme.of(context).errorColor,
+                                ),
+                                onPressed: () {
+                                  deleteTransaction(transactions[index].id);
+                                },
+                              ),
                       ),
                     ),
                     SizedBox(
-                      
                       height: 10,
                     ),
                   ],

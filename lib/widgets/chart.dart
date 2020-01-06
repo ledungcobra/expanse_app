@@ -1,4 +1,4 @@
-import 'package:expanse_app/widgets/char_bar.dart';
+import '../widgets/char_bar.dart';
 
 import '../models/transaction.dart';
 import 'package:flutter/material.dart';
@@ -35,25 +35,26 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     print(groupedTransactionValues);
     return Card(
-        elevation: 6,
-        margin: EdgeInsets.all(20),
-        child: Padding(
-            child: Row(
-              children: groupedTransactionValues.map((data) {
-                return Flexible(
-                  flex: 2,
-                  fit: FlexFit.loose,
-                  child: CharBar(
-                    label: data['day'],
-                    spendingAmount: data['amount'],
-                    spendingPctOfTotal: totalSpending == 0.0
-                        ? 0
-                        : (data['amount'] as double) / totalSpending,
-                  ),
-                );
-              }).toList(),
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-            ),
-            padding: EdgeInsets.all(10)));
+          elevation: 6,
+          margin: EdgeInsets.all(20),
+          child: Padding(
+              child: Row(
+                children: groupedTransactionValues.map((data) {
+                  return Flexible(
+                    flex: 2,
+                    fit: FlexFit.loose,
+                    child: CharBar(
+                      label: data['day'],
+                      spendingAmount: data['amount'],
+                      spendingPctOfTotal: totalSpending == 0.0
+                          ? 0
+                          : (data['amount'] as double) / totalSpending,
+                    ),
+                  );
+                }).toList(),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              padding: EdgeInsets.all(10))
+    );
   }
 }

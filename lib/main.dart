@@ -1,10 +1,15 @@
 import 'package:expanse_app/widgets/chart.dart';
 import 'package:expanse_app/widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -21,10 +26,7 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
                 fontSize: 18),
-                button: TextStyle(color: Colors.red)
-                ),
-           
-              
+            button: TextStyle(color: Colors.red)),
       ),
       home: MyHomePage(),
     );
@@ -47,15 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _deleteTransaction(String id){
+  void _deleteTransaction(String id) {
     setState(() {
-      _userTransactions.removeWhere((item){
+      _userTransactions.removeWhere((item) {
         return item.id == id;
-
       });
-      
     });
   }
+
   void addTransaction(Transaction tx) {
     setState(() {
       _userTransactions.add(tx);
@@ -66,43 +67,86 @@ class _MyHomePageState extends State<MyHomePage> {
     //Hien thi sheet tu ben duoi man hinh cho phep nguoi dung nhap vao
 
     showModalBottomSheet(
+        isDismissible: true,
+        backgroundColor: Colors.purpleAccent,
         context: ctx,
-        builder: (_) {
+        isScrollControlled: true,
+        builder: (ctx) {
+          return FractionallySizedBox(
+            heightFactor: 0.8,
+            child: GestureDetector(
+              child: NewTransaction(addTransaction),
+              behavior: HitTestBehavior.opaque,
+
+            ),
+          );
           //GestureDetector ngan chan viec sheet auto tat khi touch vao bat
           //ki vi tri nao khong phai text field
 
-          return GestureDetector(
-            child: NewTransaction(addTransaction),
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-          );
+          // return GestureDetector(
+          //   child: NewTransaction(addTransaction),
+          //   onTap: () {},
+          //   behavior: HitTestBehavior.opaque,
+          // );
         });
   }
 
+  bool switchForChar = true;
+
   @override
   Widget build(BuildContext context) {
+    final isLandscapeMode =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text("Flutter App", style: TextStyle(fontFamily: 'OpenSans')),
+      backgroundColor: Colors.red,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            _startAddNewTransaction(context);
+          },
+        )
+      ],
+    );
+    final txListWidget = Container(
+        height: 0.6 *
+            (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top),
+        child: TransactionList(_userTransactions, this._deleteTransaction));
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Flutter App", style: TextStyle(fontFamily: 'OpenSans')),
-        backgroundColor: Colors.red,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _startAddNewTransaction(context);
-            },
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Card(
-              child: Chart(this._recentTransactions),
-            ),
-            TransactionList(_userTransactions,this._deleteTransaction),
+            if (isLandscapeMode)
+              Row(
+                children: <Widget>[
+                  Text('Display Chart'),
+                  Switch(
+                    value: switchForChar,
+                    onChanged: (bool value) {
+                      setState(() {
+                        switchForChar = value;
+                      });
+                    },
+                  )
+                ],
+              ),
+            if (switchForChar)
+              Container(
+                height: 0.7 *
+                    (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top),
+                child: Chart(this._recentTransactions),
+              ),
+            txListWidget
           ],
         ),
       ),

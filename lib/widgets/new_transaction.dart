@@ -50,10 +50,13 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 20,
-      child: Container(
-        padding: EdgeInsets.all(10),
+    return  LayoutBuilder(builder: (context,constraints){
+      return Card(      
+      elevation: 100,
+      child: Container(   
+        height: constraints.maxHeight*1,
+
+        padding: EdgeInsets.only(top:0,right: 10,left: 10,bottom:10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -68,6 +71,7 @@ class _NewTransactionState extends State<NewTransaction> {
               height: 1,
             ),
             TextField(
+              
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(labelText: 'Amount'),
@@ -75,11 +79,12 @@ class _NewTransactionState extends State<NewTransaction> {
               onSubmitted: _submitData,
             ),
             Container(
-              height: 70,
+              height: constraints.maxHeight*0.15,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(dateTransaction == null?'No Date chosen!!': DateFormat('dd-MM-yyy').format(dateTransaction).toString()),
+                  //Date time picker presentation
                   FlatButton(
                     textColor: Colors.purple,
                     child: Text('Choose date',
@@ -89,6 +94,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 ],
               ),
             ),
+            //Button to submit data
             RaisedButton(
               color: Colors.purple,
               child: Text('Add Transaction',
@@ -102,5 +108,6 @@ class _NewTransactionState extends State<NewTransaction> {
         ),
       ),
     );
+    },);
   }
 }
