@@ -14,6 +14,7 @@ class TransactionList extends StatelessWidget {
       height: mediaQuery.size.height / 1.5,
       child: transactions.isEmpty
           ? LayoutBuilder(
+            
               builder: (context, constraints) {
                 return Column(
                   children: <Widget>[
