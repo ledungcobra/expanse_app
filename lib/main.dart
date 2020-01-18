@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Expense application",
       theme: ThemeData(
+
         accentColor: Colors.blue,
         fontFamily: 'Quicksand',
         errorColor: Colors.red,

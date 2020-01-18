@@ -9,15 +9,29 @@ import '../models/transaction.dart';
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
 
-  NewTransaction(this.addTransaction);
+  NewTransaction(this.addTransaction){
+    print('Constructor run');
+  }
 
   @override
   _NewTransactionState createState() => _NewTransactionState();
 }
 
+
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
+  @override
+  void initState() {
+    
+    print('init state Run');// TODO: implement initState
+    super.initState();
+  }
+  @override
+  void didUpdateWidget(NewTransaction oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+   
+  }
   final amountController = TextEditingController();
   DateTime dateTransaction;
   void _submitData(String _) {
@@ -50,7 +64,14 @@ class _NewTransactionState extends State<NewTransaction> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+   
+  }
+  @override
   Widget build(BuildContext context) {
+   
     return LayoutBuilder(
       builder: (context, constraints) {
         return Card(
@@ -103,17 +124,7 @@ class _NewTransactionState extends State<NewTransaction> {
                               .format(dateTransaction)
                               .toString()),
                       //Date time picker presentation
-                      Platform.isIOS
-                          ? Container(
-                            height: constraints.maxHeight*0.7,
-                            child: CupertinoDatePicker(
-                                initialDateTime: DateTime.now(),
-                                onDateTimeChanged: (value) {
-                                  dateTransaction = value;
-                                },
-                              ),
-                          )
-                          : FlatButton(
+                      FlatButton(
                               color: Colors.blue,
                               //textColor: Colors.purple,
                               child: Text('Choose date',
